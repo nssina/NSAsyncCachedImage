@@ -7,8 +7,9 @@ let package = Package(
     name: "NSAsyncCachedImage",
     platforms: [
         .iOS(.v13),
-        .watchOS(.v7),
-        .macOS(.v12)
+        .watchOS(.v6),
+        .macOS(.v10_15),
+        .tvOS(.v13)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
