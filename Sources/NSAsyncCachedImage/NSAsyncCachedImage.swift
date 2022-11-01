@@ -20,7 +20,11 @@ public struct NSAsyncCachedImage<Content, Placeholder: View> : View where Conten
     public var body: some View {
         Group {
             if let data = network.data {
+                #if os(iOS)
                 Image(uiImage: UIImage(data: data)!)
+                #elseif os(macOS)
+                Image(nsImage: NSImage(data: data)!)
+                #endif
             } else {
                 placeHolder
             }
