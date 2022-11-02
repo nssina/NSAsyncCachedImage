@@ -12,8 +12,8 @@ NSAsyncCachedImage supports `iOS 13`, `macOS 10.15`, `tvOS 13` and `watchOS 6`.
 
 ## Installation
 
-SwiftUIKit can be installed with the [Swift Package Manager](https://www.swift.org/package-manager/):
+NSAsyncCachedImage can be installed with the [Swift Package Manager](https://www.swift.org/package-manager/):
 
 ```
-[https://github.com/nssina/NSAsyncCachedImage.git](https://github.com/nssina/NSAsyncCachedImage.git)
+https://github.com/danielsaidi/SwiftUIKit.git
 ```
