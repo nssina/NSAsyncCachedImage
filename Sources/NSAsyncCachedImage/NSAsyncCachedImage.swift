@@ -7,12 +7,13 @@
 
 import SwiftUI
 
-public struct NSAsyncCachedImage<Content, Placeholder: View> : View where Content : View {
-    var placeHolder: Placeholder
-    @ObservedObject var network: NSNetwork
+public struct NSAsyncCachedImage<Placeholder>: View where Placeholder: View {
+    
+    private var placeHolder: Placeholder
+    @ObservedObject private var network: NSNetwork
     
     public init(_ url: String,
-                @ViewBuilder placeHolder: () -> Placeholder) {
+                @ViewBuilder placeHolder: @escaping () -> Placeholder) {
         self.placeHolder = placeHolder()
         self.network = NSNetwork(url: url)
     }
