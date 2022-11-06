@@ -8,23 +8,41 @@
 import SwiftUI
 
 public struct NSAsyncCachedImage<Placeholder>: View where Placeholder: View {
-    
-    private var placeHolder: Placeholder
-    @ObservedObject private var network: NSNetwork
-    
+
+    private let placeHolder: Placeholder
+    private let image: (Image) -> Image
+    @ObservedObject private var network: NSAsyncNetwork
+
     public init(_ url: String,
+                @ViewBuilder image: @escaping (Image) -> Image,
                 @ViewBuilder placeHolder: @escaping () -> Placeholder) {
         self.placeHolder = placeHolder()
-        self.network = NSNetwork(url: url)
+        self.network = NSAsyncNetwork(url: url)
+        self.image = image
+    }
+
+    public init(_ url: String,
+                cachePolicy: URLRequest.CachePolicy,
+                timeout: TimeInterval,
+                @ViewBuilder image: @escaping (Image) -> Image,
+                @ViewBuilder placeHolder: @escaping () -> Placeholder) {
+        self.placeHolder = placeHolder()
+        self.network = NSAsyncNetwork(url: url, cachePolicy: cachePolicy, timeout: timeout)
+        self.image = image
+    }
+
+    public var body: some View {
+        content
     }
     
-    public var body: some View {
+    private var content: some View {
         Group {
-            if let data = network.data {
+            if let data = network.data,
+               !data.isEmpty {
                 #if os(macOS)
-                Image(nsImage: NSImage(data: data)!)
+                image(Image(nsImage: NSImage(data: data) ?? NSImage()))
                 #else
-                Image(uiImage: UIImage(data: data)!)
+                image(Image(uiImage: UIImage(data: data) ?? UIImage()))
                 #endif
             } else {
                 placeHolder
