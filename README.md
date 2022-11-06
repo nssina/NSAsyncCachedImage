@@ -17,3 +17,30 @@ NSAsyncCachedImage can be installed with the [Swift Package Manager](https://www
 ```
 https://github.com/nssina/NSAsyncCachedImage.git
 ```
+
+## Usage
+
+```
+import SwiftUI
+import NSAsyncCachedImage
+
+struct ContentView: View {
+    var body: some View {
+        VStack {
+            NSAsyncCachedImage("https://example.com/icon.png") { image in
+                image
+                    .resizable()
+            } placeHolder: {
+                ProgressView()
+            }
+            .frame(width: 200, height: 200)
+            .cornerRadius(12)
+        }
+        .padding()
+    }
+}
+```
+
+## License
+
+The project is available under [MIT Licence](./LICENSE)
