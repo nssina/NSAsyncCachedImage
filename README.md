@@ -20,7 +20,7 @@ https://github.com/nssina/NSAsyncCachedImage.git
 
 ## Usage
 
-```
+```swift
 import SwiftUI
 import NSAsyncCachedImage
 
