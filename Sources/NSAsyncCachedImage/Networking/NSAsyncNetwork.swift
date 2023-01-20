@@ -8,20 +8,20 @@
 import Foundation
 
 private protocol NSAsyncNetworkDelegate {
-    func getImage(_ url: String, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) async
+    func getImage(_ url: String, session: URLSession, cache: URLCache, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) async
 }
 
 final class NSAsyncNetwork: ObservableObject, NSAsyncNetworkDelegate {
     @Published var data = Data()
 
-    private let cache = URLCache.shared
-    private let session = URLSession.shared
-
-    init(url: String, cachePolicy: URLRequest.CachePolicy = .returnCacheDataElseLoad, timeout: TimeInterval = 60) {
-        Task { await getImage(url, cachePolicy: cachePolicy, timeout: timeout) }
+    init(url: String,
+         session: URLSession = .shared,
+         urlCache: URLCache = .shared,
+         cachePolicy: URLRequest.CachePolicy = .returnCacheDataElseLoad, timeout: TimeInterval = 60) {
+        Task { await getImage(url, session: session, cache: urlCache, cachePolicy: cachePolicy, timeout: timeout) }
     }
 
-    final fileprivate func getImage(_ url: String, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) async {
+    final fileprivate func getImage(_ url: String, session: URLSession, cache: URLCache, cachePolicy: URLRequest.CachePolicy, timeout: TimeInterval) async {
         guard let url = URL(string: url) else { return }
         let request = URLRequest(url: url,
                                  cachePolicy: cachePolicy,

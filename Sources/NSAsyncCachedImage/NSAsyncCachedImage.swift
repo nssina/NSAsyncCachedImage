@@ -20,18 +20,29 @@ public struct NSAsyncCachedImage<Placeholder>: View where Placeholder: View {
         self.network = NSAsyncNetwork(url: url)
         self.image = image
     }
+    
+    public init(_ url: String,
+                cache: URLCache,
+                @ViewBuilder image: @escaping (Image) -> Image,
+                @ViewBuilder placeHolder: @escaping () -> Placeholder) {
+        self.placeHolder = placeHolder()
+        self.network = NSAsyncNetwork(url: url, urlCache: cache)
+        self.image = image
+    }
 
     public init(_ url: String,
+                session: URLSession,
+                cache: URLCache,
                 cachePolicy: URLRequest.CachePolicy,
                 timeout: TimeInterval,
                 @ViewBuilder image: @escaping (Image) -> Image,
                 @ViewBuilder placeHolder: @escaping () -> Placeholder) {
         self.placeHolder = placeHolder()
-        self.network = NSAsyncNetwork(url: url, cachePolicy: cachePolicy, timeout: timeout)
+        self.network = NSAsyncNetwork(url: url, session: session, urlCache: cache, cachePolicy: cachePolicy, timeout: timeout)
         self.image = image
     }
 
-    public var body: some View {
+    @MainActor public var body: some View {
         content
     }
     
