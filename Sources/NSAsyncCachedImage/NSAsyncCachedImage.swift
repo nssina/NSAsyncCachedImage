@@ -37,12 +37,11 @@ public struct NSAsyncCachedImage<Placeholder>: View where Placeholder: View {
     
     private var content: some View {
         Group {
-            if let data = network.data,
-               !data.isEmpty {
+            if !network.data.isEmpty {
                 #if os(macOS)
-                image(Image(nsImage: NSImage(data: data) ?? NSImage()))
+                image(Image(nsImage: NSImage(data: network.data) ?? NSImage()))
                 #else
-                image(Image(uiImage: UIImage(data: data) ?? UIImage()))
+                image(Image(uiImage: UIImage(data: network.data) ?? UIImage()))
                 #endif
             } else {
                 placeHolder
